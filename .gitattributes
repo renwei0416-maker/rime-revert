@@ -1,0 +1,10 @@
+# 统一换行：仓库里存 LF，检出一致；.cmd 用 CRLF 以免 cmd.exe 出问题
+* text=auto
+*.lua text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.py text eol=lf
+*.cmd text eol=crlf
+*.dll binary

@@ -1,0 +1,51 @@
+# rime-revert 配置示例
+#
+# 用法：把下面 patch: 段里的内容合并进你的 *.custom.yaml（或方案 yaml 自己的 patch:），
+#       「重新部署」即可。所有项都可以删——删掉就用脚本里的默认值。
+#
+# 注意：
+#   1. 路径、目录名要和你的实际安装位置对上，见 README「安装」。
+#   2. 触发码里的字符必须在该方案 speller/alphabet 里（默认含 ` ; / \ 等）。
+#   3. 触发码不能重复（包括不能和 revert/trigger 撞码），重复的那些项一律不生效。
+
+customization:
+  distribution_code_name: Weasel
+
+patch:
+  # ---------- 1. 接线：把 revert.lua 放到按键处理链最前面 ----------
+  # 文件在 lua\myfolder\revert.lua 时，模块名就是 myfolder.revert。
+  "engine/processors/@before 0": lua_processor@*myfolder.revert
+
+  # ---------- 2. 组件参数 ----------
+  "revert/dll_dir": "lua/myfolder"          # sendKeyCode.dll 所在目录（相对 Rime 用户目录）
+
+  # ---------- 3. 方式一：文本触发码（默认 qq/）----------
+  "revert/trigger": "aa/"
+  # 只想用组合键、不要文本触发码时：
+  #"revert/trigger": "none"
+
+  # ---------- 4. 方式二：组合键（默认关闭）----------
+  #"revert/hotkey": "Control+slash"
+
+  # ---------- 5. 方式三：快捷触发码（默认关闭）----------
+  # 启用脚本里预置的 17 项（zz; yy; aa; cc; vv; xx; ss; gg; tt; ww; bb; rr; hh; ee; dd; kk; ff;）
+  "revert/shortcuts": "@defaults"
+  # 只要其中几项（不写 @defaults 就是"只有这几项"）：
+  #"revert/shortcuts": "zz;=ctrl+z  yy;=ctrl+y  ss;=shift+home  ff;=@to-symbol"
+  # 预置项 + 自己加的项（混写）：
+  #"revert/shortcuts": "@defaults eq;=ctrl+end  wq;=ctrl+shift+right"
+  # 多步动作：先选到行首，再往前多选一格（连换行一起选）
+  #"revert/shortcuts": "sq;=shift+home,shift+left"
+
+  # ---------- 6. @to-symbol 认定的"符号" ----------
+  # 默认值（英文逗号/句号等也算了进去）：
+  "revert/symbols": "，。！？；：、,.!?;:"
+  # 只认中文标点：
+  #"revert/symbols": "，。！？；：、"
+  # 想要"删到本行行首但不删前面的换行"，把换行符 \n 也算进符号集：
+  #"revert/symbols": "，。！？；：、\n"
+
+  # ---------- 7. 记账与保护 ----------
+  "revert/stack_size": 50                   # 能连续撤回多少笔
+  "revert/max_backspaces": 500              # 单次最多删多少字符（不要超过 10000）
+  "revert/debounce_ms": 200                 # 连按保护（毫秒），只对方式一（文本触发码）生效

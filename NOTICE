@@ -1,0 +1,27 @@
+rime-revert
+Copyright (c) 2026 renwei0416-maker
+
+本项目基于/包含以下第三方作品，均按其原始许可证（MIT）使用，版权归原作者所有。
+
+1. rime-lua-sendKeyCode
+   - 作者：秋月 (qiuyue0)
+   - 来源：https://github.com/qiuyue0/rime-lua-sendKeyCode
+   - 许可：MIT License, Copyright (c) 2024 秋月
+   - 用途：本项目 `sendKeyCode.c` 的异步注入骨架（请求槽 + 工作线程 + 分批发送 +
+     退格注入 `press_backspace`）源自该项目的同名文件；本仓库在此基础上做了大量扩展，
+     新增了 `press_keys`（发送任意组合键 / 多步序列）、扫描码注入
+     （`KEYEVENTF_SCANCODE` + `KEYEVENTF_EXTENDEDKEY`，避免组合键里的修饰键被输入法
+     键盘钩子吃掉）、dry-run 测试钩子与参数校验。
+
+2. Lua 5.4 头文件（`include/lua.h`、`include/luaconf.h`、`include/lauxlib.h`）
+   - 版权：Copyright (C) 1994-2020 Lua.org, PUC-Rio（Lua 5.4.0）
+   - 来源：https://www.lua.org/
+   - 许可：MIT License（完整声明见各文件末尾的 Copyright Notice）
+   - 用途：编译 `sendKeyCode.dll` 需要 Lua C API 头文件；随仓库提供是为了离线编译。
+
+3. 小狼毫 Weasel / librime（运行时依赖，未随本仓库分发）
+   - 来源：https://github.com/rime/weasel 、 https://github.com/rime/librime
+   - 用途：`sendKeyCode.dll` 链接 `rime.dll` 提供的 Lua C API，并由小狼毫加载
+     `revert.lua`。用户需自行安装小狼毫。
+
+如果你再分发本仓库或其二进制，请保留本文件与上述版权声明。
